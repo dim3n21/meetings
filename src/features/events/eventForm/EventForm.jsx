@@ -1,9 +1,10 @@
+import cuid from 'cuid';
 import React, { useState } from 'react';
 import { Segment, Header, Form, Button } from 'semantic-ui-react';
 
-export default function EventForm({ setFormOpen }) {
+export default function EventForm({ setFormOpen, createEvent, selectedEvent }) {
 
-  const initialValue = {
+  const initialValue = selectedEvent ?? {
     title: '',
     category: '',
     description: '',
@@ -23,12 +24,18 @@ export default function EventForm({ setFormOpen }) {
   }
 
   const handleSubmitForm = () => {
-    console.log(values);
+    createEvent({
+      ...values,
+      id: cuid,
+      hostedBy: 'Bob',
+      attendees: [],
+      hostPhotoURL: '/assets/user.png' });
+    setFormOpen(false)
   }
 
   return (
     <Segment clearing>
-      <Header content='Create new event' />
+      <Header content={selectedEvent ? 'Update the event' : 'Create new event'} />
       <Form onSubmit={handleSubmitForm}>
         <Form.Field>
           <input 
