@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 const EventDetailedPage = ({match}) => {
     const {params: {id}} = match;
     const event = useSelector(state => state.event.events.find(e => e.id === id));
-
+    console.log(event);
     return(
         <Grid>
             <Grid.Column width={10}>
