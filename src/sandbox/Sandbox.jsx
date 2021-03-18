@@ -9,6 +9,7 @@ import TestMap from './TestMap';
 const Sandbox = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.test.data);
+  const { loading } = useSelector((state) => state.async);
   const defaultProps = {
     center: {
       lat: 59.95,
@@ -17,6 +18,7 @@ const Sandbox = () => {
     zoom: 11,
   };
   const [location, setLocation] = useState(defaultProps);
+  const [target, setTarget] = useState(null);
 
   const handleSetLocation = (latLng) => {
     setLocation({...location, center: {lat: latLng.lat, lng: latLng.lng}})
@@ -26,16 +28,31 @@ const Sandbox = () => {
       <h1>Sandbox</h1>
       <h3>data is {data}</h3>
       <Button
-        onClick={() => dispatch(increment(10))}
+        name='increment'
+        loading={loading && target === 'increment'}
+        onClick={
+          (e) => { 
+            dispatch(increment(10))
+            setTarget(e.target.name);
+          }
+        }
         content='Increment'
         color='green'
       />
       <Button
-        onClick={() => dispatch(decrement(20))}
+        name='decrement'
+        loading={loading && target === 'decrement'}
+        onClick={
+          (e) => {
+            dispatch(decrement(20))
+            setTarget(e.target.name);
+          }
+        }
         content='Decrement'
         color='red'
       />
       <Button
+        name='increment'
         onClick={() =>
           dispatch(openModal({ modalType: "TestModal", modalProps: data }))
         }
